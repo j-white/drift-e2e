@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  ports:
+  - port: 5432
+    name: psql
+  selector:
+    app: postgres
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  containers:
+  - image: postgres:10.0
+    imagePullPolicy: IfNotPresent
+    name: postgres
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "0.5"
+    ports:
+    - containerPort: 5432
+      name: psql
+  restartPolicy: Always

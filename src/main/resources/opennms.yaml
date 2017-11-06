@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opennms
+  labels:
+    app: opennms
+spec:
+  ports:
+  - port: 8980
+    name: web
+  selector:
+    app: opennms
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: opennms
+  labels:
+    app: opennms
+spec:
+  containers:
+  - image: opennms/opennms:latest
+    imagePullPolicy: IfNotPresent
+    name: opennms
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "0.5"
+    ports:
+    - containerPort: 8980
+      name: web
+    - containerPort: 8101
+      name: karaf-shell
+    env:
+      - name: POSTGRES_HOST
+        value: postgres
+      - name: POSTGRES_PORT
+        value: 5432
+      - name: OPENNMS_DBNAME
+        value: opennms
+      - name: POSTGRES_USER
+        value: postgres
+      - name: POSTGRES_PASSWORD
+        value: postgres
+      - name: OPENNMS_DBUSER
+        value: opennms
+      - name: OPENNMS_DBPASS
+        value: opennms
+  restartPolicy: Always

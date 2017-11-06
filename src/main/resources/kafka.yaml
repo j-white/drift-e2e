@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-hs
+  labels:
+    app: kafka
+spec:
+  ports:
+  - port: 9092
+    name: broker
+  clusterIP: None
+  selector:
+    app: kafka
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: kafka
+  labels:
+    app: kafka
+spec:
+  serviceName: kafka-hs
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka-broker
+        image: "solsson/kafka:0.11.0.0"
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command:
+              - bin/kafka-topics.sh
+              - --zookeeper
+              - "zk-cs:2181"
+              - --list
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+              - bin/kafka-topics.sh
+              - --zookeeper
+              - "zk-cs:2181"
+              - --list
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        ports:
+        - containerPort: 9092
+          name: kafka
+        command:
+        - sh
+        - -c
+        - "./bin/kafka-server-start.sh config/server.properties --override zookeeper.connect=zk-cs:2181 --override log.dirs=/opt/kafka/data/logs --override broker.id=${HOSTNAME##*-}"
+#        volumeMounts:
+#        - name: datadir
+#          mountPath: "{{ .Values.DataDirectory }}"
+#  volumeClaimTemplates:
+#  - metadata:
+#      name: datadir
+#      annotations:
+#        volume.alpha.kubernetes.io/storage-class: anything
+#    spec:
+#      accessModes: [ "ReadWriteOnce" ]
+#      resources:
+#        requests:
+#          storage: {{ .Values.Storage }}
