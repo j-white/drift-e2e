@@ -40,5 +40,5 @@ CMD [ "-f" ]
 ## -- OpenNMS JMX        18980/TCP
 ## -- SNMP Trapd           162/UDP
 ## -- Syslog               514/UDP
-EXPOSE 8201 18980 162/udp 514/udp
-
+## -- Netflow 5           8877/UDP
+EXPOSE 8201 18980 162/udp 514/udp 8877/udp

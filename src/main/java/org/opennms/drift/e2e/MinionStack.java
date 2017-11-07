@@ -50,6 +50,11 @@ public class MinionStack extends YamlBasedK8sStack {
         data.put("org.opennms.core.ipc.sink.kafka.cfg", "bootstrap.servers=kafka-hs:9092\n" +
                 "acks=1");
 
+        data.put("org.opennms.features.telemetry.listeners-udp-8877.cfg", "name=Netflow-5\n" +
+                "class-name=org.opennms.netmgt.telemetry.listeners.udp.UdpListener\n" +
+                "batch.size=10\n" +
+                "listener.port=8877");
+
         final ConfigMap configMap = new ConfigMapBuilder()
                 .withNewMetadata()
                 .withName("minion-config")

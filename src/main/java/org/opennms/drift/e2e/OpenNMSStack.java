@@ -61,7 +61,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class OpenNMSStack extends YamlBasedK8sStack {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PostgresStack.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OpenNMSStack.class);
 
     public OpenNMSStack() {
         super(Resources.getResource("opennms.yaml"));
@@ -69,7 +69,7 @@ public class OpenNMSStack extends YamlBasedK8sStack {
 
     @Override
     public List<GizmoK8sStack> getDependencies() {
-        return Lists.newArrayList(new PostgresStack());
+        return Lists.newArrayList(new PostgresStack(), new ElasticsearchStack());
     }
 
     @Override
@@ -82,9 +82,26 @@ public class OpenNMSStack extends YamlBasedK8sStack {
             throw new RuntimeException(e);
         }
 
+        try {
+            URL url = Resources.getResource("opennms/org.apache.karaf.features.cfg");
+            config.put("org.apache.karaf.features.cfg", Resources.toString(url, Charsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            URL url = Resources.getResource("opennms/telemetryd-configuration.xml");
+            config.put("telemetryd-configuration.xml", Resources.toString(url, Charsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         config.put("kafka.properties", "org.opennms.core.ipc.sink.initialSleepTime=60000\n" +
                 "org.opennms.core.ipc.sink.strategy=kafka\n" +
                 "org.opennms.core.ipc.sink.kafka.bootstrap.servers=kafka-hs:9092");
+
+        config.put("org.opennms.features.flows.persistence.elastic.cfg", "elasticUrl=http://elasticsearch:9200");
+        config.put("org.opennms.plugin.elasticsearch.rest.forwarder.cfg", "elasticUrl=http://elasticsearch:9200");
 
         final ConfigMap configMap = new ConfigMapBuilder()
                 .withNewMetadata()
