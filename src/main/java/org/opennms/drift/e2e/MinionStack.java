@@ -41,13 +41,14 @@ public class MinionStack extends YamlBasedK8sStack {
 
     @Override
     public List<GizmoK8sStack> getDependencies() {
-        return Lists.newArrayList(new KafkaStack());
+        return Lists.newArrayList(new KafkaStack(), new OpenNMSStack());
     }
 
     @Override
     public List<ConfigMap> getConfigMaps(GizmoK8sStacker stacker) {
         final Map<String, String> data = Maps.newHashMap();
-        data.put("org.opennms.core.ipc.sink.kafka.cfg", "kafka:9092");
+        data.put("org.opennms.core.ipc.sink.kafka.cfg", "bootstrap.servers=kafka-hs:9092\n" +
+                "acks=1");
 
         final ConfigMap configMap = new ConfigMapBuilder()
                 .withNewMetadata()

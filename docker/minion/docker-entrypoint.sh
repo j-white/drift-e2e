@@ -51,7 +51,7 @@ opennms-core-ipc-sink-kafka' > "$MINION_HOME/etc/featuresBoot.d/kafka.boot"
     fi
 
     if [ -d "${MINION_HOME}/overlay" ]; then
-        cp -R ${MINION_HOME}/overlay/* ${MINION_HOME}/etc/
+        cp -RL ${MINION_HOME}/overlay/* ${MINION_HOME}/etc/
     fi
 }
 

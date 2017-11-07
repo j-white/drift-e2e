@@ -56,7 +56,7 @@ initConfig() {
   fi
 
   if [ -d "${OPENNMS_HOME}/overlay" ]; then
-    cp -R ${OPENNMS_HOME}/overlay/* ${OPENNMS_HOME}/etc/
+    cp -RL ${OPENNMS_HOME}/overlay/* ${OPENNMS_HOME}/etc/
   fi
 }
 

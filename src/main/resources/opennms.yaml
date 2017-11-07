@@ -9,6 +9,8 @@ spec:
   ports:
   - port: 8980
     name: web
+  - port: 61616
+    name: openwire
   selector:
     app: opennms
 ---
@@ -32,6 +34,8 @@ spec:
       name: web
     - containerPort: 8101
       name: karaf-shell
+    - containerPort: 61616
+      name: openwire
     env:
       - name: POSTGRES_HOST
         value: postgres
@@ -47,4 +51,16 @@ spec:
         value: opennms
       - name: OPENNMS_DBPASS
         value: opennms
+    volumeMounts:
+    - name: config-overlay-volume
+      mountPath: /opt/opennms/overlay
+  volumes:
+    - name: config-overlay-volume
+      configMap:
+        name: opennms-config
+        items:
+        - key: kafka.properties
+          path: opennms.properties.d/kafka.properties
+        - key: opennms-activemq.xml
+          path: opennms-activemq.xml
   restartPolicy: Always
