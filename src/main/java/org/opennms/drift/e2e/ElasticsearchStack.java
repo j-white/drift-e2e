@@ -74,12 +74,10 @@ public class ElasticsearchStack extends YamlBasedK8sStack {
     }
 
     public static void waitForElasticsearch(GizmoK8sStacker stacker) {
-        final InetSocketAddress esAddr = PodUtils.waitForPodAndForwardPort(stacker, "app", "es-client", 9200);
-        /*LOG.info("Waiting for Elasticsearch @ {}.", esAddr);
-        await().atMost(2, MINUTES).pollInterval(5, SECONDS).pollDelay(0, SECONDS)
-                .until(canConnectToEs(esAddr));
-        LOG.info("Elasticsearch is online.");
-        */
+        final InetSocketAddress esAddr = PodUtils.waitForPodAndForwardPort(stacker,
+                "app", "es-client", 9200,
+                4, MINUTES);
+        // TODO: ES doesn't listen on 127.0.0.1 or 0.0.0.0, so port forwarding doesn't work here
     }
 
     public static Callable<Boolean> canConnectToEs(final InetSocketAddress addr) {

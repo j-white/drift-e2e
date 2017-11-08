@@ -61,7 +61,7 @@ public class ElasticsearchMasterStack extends YamlBasedK8sStack {
 
     public static void waitForMaster(GizmoK8sStacker stacker) {
         await().atMost(2, MINUTES).pollInterval(5, SECONDS).pollDelay(0, SECONDS)
-                .until(() -> StackUtils.getFirstRunningPod(stacker, "app", "es-master"), is(notNullValue()));
+                .until(() -> StackUtils.getFirstReadyPod(stacker, "app", "es-master"), is(notNullValue()));
     }
 
 }
