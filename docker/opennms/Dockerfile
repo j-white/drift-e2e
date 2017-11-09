@@ -11,8 +11,12 @@ RUN yum -y --setopt=tsflags=nodocs update && \
                    rrdtool \
                    jrrd2 \
                    opennms-core \
-                   opennms-webapp-jetty && \
+                   opennms-webapp-jetty \
+                   wget \
+                   unzip && \
     yum clean all && \
+    wget -qO /opt/opennms/jetty-webapps/hawtio.war https://oss.sonatype.org/content/repositories/public/io/hawt/hawtio-default/1.4.63/hawtio-default-1.4.63.war && \
+    unzip /opt/opennms/jetty-webapps/hawtio.war -d /opt/opennms/jetty-webapps/hawtio && rm -f /opt/opennms/jetty-webapps/hawtio.war && \
     rm -rf /var/cache/yum && \
     rm -rf /opt/opennms/logs \
            /var/opennms/rrd \

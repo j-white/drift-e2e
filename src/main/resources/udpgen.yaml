@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: udpgen
+spec:
+  containers:
+  - image: opennms/udpgen
+    args:
+      - "-i"
+      - "-x"
+      - "netflow5"
+      - "-r"
+      - "1000"
+      - "-h"
+      - "minion"
+    imagePullPolicy: IfNotPresent
+    name: udpgen
+  restartPolicy: Always

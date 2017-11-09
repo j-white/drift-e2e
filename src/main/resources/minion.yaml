@@ -8,6 +8,7 @@ metadata:
 spec:
   ports:
   - port: 8877
+    protocol: UDP
     name: netflow-5
   selector:
     app: minion
@@ -35,6 +36,7 @@ spec:
         - containerPort: 8201
           name: karaf-shell
         - containerPort: 8877
+          protocol: UDP
           name: netflow-5
         imagePullPolicy: IfNotPresent
         env:

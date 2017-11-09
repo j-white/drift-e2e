@@ -47,9 +47,22 @@ kubectl delete namespace $(gizmo-ns)
 mvn -Dtest=MinionStackTest test
 ```
 
-# Services
+## Performance testing
 
-## Kafka
+Start by access the OpenNMS Web UI:
+
+```
+kubectl -n $(gizmo-ns) opennms port-forward 18980:8980
+```
+
+Access Hawtio using the port from above:
+```
+http://127.0.0.1:18980/hawtio/login
+```
+
+## Services Notes
+
+### Kafka
 
 List the topics:
 
@@ -57,7 +70,13 @@ List the topics:
 kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --zookeeper zk-cs:2181 --list
 ```
 
-## OpenNMS
+Topic details:
+
+```
+kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --describe --zookeeper zk-cs:2181 --topic OpenNMS.Sink.Telemetry.Netflow-5 
+```
+
+### OpenNMS
 
 Restart:
 
@@ -66,8 +85,15 @@ kubectl -n $(gizmo-ns) exec opennms -- /opt/opennms/bin/opennms stop
 ```
 
 
-## Flowgen
+## Udpgen
 
 ```
-kubectl -n $(gizmo-ns) create -f src/main/resources/flowgen.yaml
+kubectl -n $(gizmo-ns) create -f src/main/resources/udpgen.yaml
+```
+
+## Burrow
+
+Lag monitoring:
+```
+http://127.0.0.1:46635/v2/kafka/local/consumer/OpenNMS/lag
 ```

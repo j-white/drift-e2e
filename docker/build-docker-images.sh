@@ -18,5 +18,8 @@ run docker build -t opennms/minion ./minion
 echo "Building OpenNMS image"
 run docker build -t opennms/opennms ./opennms
 
-echo "Building Flowgen"
-run docker build -t opennms/flowgen ./flowgen
+echo "Building udpgen"
+run docker build -t opennms/udpgen ./udpgen
+
+echo "Building Burrow image"
+run docker build -t opennms/burrow ./burrow
