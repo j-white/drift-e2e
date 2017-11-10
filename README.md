@@ -27,24 +27,23 @@ NOTE: You may also need to compile [Gizmo](https://github.com/OpenNMS/gizmo) fro
 
 Setup the stack using:
 ```
-mvn -Dtest=MinionStackTest test
+mvn -Dtest=DriftStackTest test
 ```
 
-If the test was successful, you should be left with a running environment in your Kubernetes cluster.
 This alias can be used to fetch the corresponding namespace for the stack:
 ```
 alias gizmo-ns='kubectl get namespaces | grep Active | grep gizmo | awk -F" " "{print \$1}" | head -n 1'
 ```
 
+If the test was successful, you should be left with a running environment in your Kubernetes cluster.
 You can then enumerate the pods with:
 ```
-kubectl -n $(gizmo-ns) get pods
+kubectl delete namespace $(gizmo-ns)
 ```
 
 If the tests failed, you can delete the namespace, and then try the setup again:
 ```
-kubectl delete namespace $(gizmo-ns)
-mvn -Dtest=MinionStackTest test
+kubectl -n $(gizmo-ns) get pods
 ```
 
 ## Performance testing
@@ -52,12 +51,17 @@ mvn -Dtest=MinionStackTest test
 Start by access the OpenNMS Web UI:
 
 ```
-kubectl -n $(gizmo-ns) opennms port-forward 18980:8980
+kubectl -n $(gizmo-ns) port-forward opennms 18980:8980
 ```
 
 Access Hawtio using the port from above:
 ```
 http://127.0.0.1:18980/hawtio/login
+```
+
+Start the load generator:
+```
+kubectl -n $(gizmo-ns) scale --replicas=1 deployment/udpgen
 ```
 
 ## Services Notes
@@ -73,7 +77,13 @@ kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --zookeeper zk-
 Topic details:
 
 ```
-kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --describe --zookeeper zk-cs:2181 --topic OpenNMS.Sink.Telemetry.Netflow-5 
+kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --describe --zookeeper zk-cs:2181 --topic OpenNMS.Sink.Telemetry.Netflow-5
+```
+
+Increase the number of partitions:
+
+```
+kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --alter --zookeeper zk-cs:2181 --topic OpenNMS.Sink.Telemetry.Netflow-5 --partitions 16
 ```
 
 ### OpenNMS

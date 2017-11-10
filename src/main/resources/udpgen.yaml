@@ -1,18 +1,27 @@
-apiVersion: v1
-kind: Pod
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   name: udpgen
+  labels:
+    app: udpgen
 spec:
-  containers:
-  - image: opennms/udpgen
-    args:
-      - "-i"
-      - "-x"
-      - "netflow5"
-      - "-r"
-      - "1000"
-      - "-h"
-      - "minion"
-    imagePullPolicy: IfNotPresent
-    name: udpgen
-  restartPolicy: Always
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: udpgen
+    spec:
+      containers:
+      - image: opennms/udpgen
+        args:
+          - "-i"
+          - "-x"
+          - "netflow5"
+          - "-r"
+          - "1000"
+          - "-h"
+          - "minion"
+        imagePullPolicy: IfNotPresent
+        name: udpgen
+      restartPolicy: Always

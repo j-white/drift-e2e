@@ -40,6 +40,8 @@ broker-offsets=60
 [lagcheck]
 intervals=10
 expire-group=604800
+zookeeper-interval=15
+zk-group-refresh=60
 
 [httpserver]
 server=on

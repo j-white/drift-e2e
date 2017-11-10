@@ -28,40 +28,20 @@
 
 package org.opennms.drift.e2e;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
-import org.opennms.gizmo.k8s.GizmoK8sStack;
-import org.opennms.gizmo.k8s.GizmoK8sStacker;
-import org.opennms.gizmo.k8s.stacks.YamlBasedK8sStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.opennms.gizmo.k8s.GizmoK8sRule;
 
-import java.net.InetSocketAddress;
-import java.util.List;
-import java.util.function.Consumer;
+public class DriftStackTest {
 
-public class BurrowStack extends YamlBasedK8sStack {
+    @ClassRule
+    public static GizmoK8sRule gizmo = GizmoK8sRule.builder()
+            .withStack(new MinionStack("test"))
+            .withStack(new UdpgenStack())
+            .withStack(new BurrowStack())
+            .skipTearDown(true)
+            .build();
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaStack.class);
-
-    public BurrowStack() {
-        super(Resources.getResource("burrow.yaml"));
-    }
-
-    @Override
-    public List<Consumer<GizmoK8sStacker>> getWaitingRules() {
-        return ImmutableList.of((stacker) -> waitForBurrow(stacker));
-    }
-
-    /*
-    @Override
-    public List<GizmoK8sStack> getDependencies() {
-        return Lists.newArrayList(new KafkaStack());
-    }
-    */
-
-    public static void waitForBurrow(GizmoK8sStacker stacker) {
-        final InetSocketAddress burrowAddr = PodUtils.waitForPodAndForwardPort(stacker, "app", "burrow", 8000);
-    }
+    @Test
+    public void canBootstrap() { }
 }

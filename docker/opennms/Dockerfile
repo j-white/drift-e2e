@@ -28,6 +28,8 @@ RUN yum -y --setopt=tsflags=nodocs update && \
     ln -s /opennms-data/rrd /var/opennms/rrd && \
     ln -s /opennms-data/reports /var/opennms/reports
 
+# Moar threads!
+COPY ./assets/org.opennms.features.jest.client-22.0.0-SNAPSHOT.jar /opt/opennms/system/org/opennms/features/jest/org.opennms.features.jest.client/22.0.0-SNAPSHOT/org.opennms.features.jest.client-22.0.0-SNAPSHOT.jar
 COPY ./assets/opennms-datasources.xml.tpl /tmp
 COPY ./docker-entrypoint.sh /
 

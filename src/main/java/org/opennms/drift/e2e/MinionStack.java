@@ -41,7 +41,7 @@ public class MinionStack extends YamlBasedK8sStack {
 
     @Override
     public List<GizmoK8sStack> getDependencies() {
-        return Lists.newArrayList(new BurrowStack(), new OpenNMSStack());
+        return Lists.newArrayList(new KafkaStack(), new OpenNMSStack());
     }
 
     @Override
