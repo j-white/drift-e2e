@@ -29,6 +29,16 @@ LABEL license="AGPLv3" \
       vendor="OpenNMS Community" \
       name="Minion"
 
+# Workaround for Felix bug on GCP: invalid version "4.4.64.": invalid format
+#java.lang.IllegalArgumentException: invalid version "4.4.64.": invalid format
+#        at org.osgi.framework.Version.<init>(Version.java:147) ~[org.osgi.core-6.0.0.jar:?]
+#        at org.apache.felix.framework.util.manifestparser.NativeLibraryClause.normalizeOSVersion(NativeLibraryClause.java:770) ~[?:?]
+#        at org.apache.felix.framework.Felix.initializeFrameworkProperties(Felix.java:4617) ~[?:?]
+#        at org.apache.felix.framework.Felix.<init>(Felix.java:384) ~[?:?]
+#        at org.apache.felix.framework.FrameworkFactory.newFramework(FrameworkFactory.java:28) ~[?:?]
+#        at org.apache.karaf.main.Main.launch(Main.java:256) ~[org.apache.karaf.main-4.1.2.jar:4.1.2]
+ENV JAVA_OPTS -Dos.version=4.13.11-200.fc26.x86_64
+
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
 CMD [ "-f" ]

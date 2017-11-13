@@ -31,6 +31,8 @@ RUN yum -y --setopt=tsflags=nodocs update && \
 # Moar threads!
 COPY ./assets/org.opennms.features.jest.client-22.0.0-SNAPSHOT.jar /opt/opennms/system/org/opennms/features/jest/org.opennms.features.jest.client/22.0.0-SNAPSHOT/org.opennms.features.jest.client-22.0.0-SNAPSHOT.jar
 COPY ./assets/opennms-datasources.xml.tpl /tmp
+# Moar RAM!
+COPY ./assets/opennms.conf /opt/opennms/etc/opennms.conf
 COPY ./docker-entrypoint.sh /
 
 ## Volumes for storing data outside of the container

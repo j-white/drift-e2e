@@ -66,8 +66,8 @@ spec:
           httpGet:
             path: /_cluster/health
             port: 9200
-          initialDelaySeconds: 20
-          timeoutSeconds: 5
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
         volumeMounts:
         - name: storage
           mountPath: /data
@@ -136,8 +136,8 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 9300
-          initialDelaySeconds: 20
-          periodSeconds: 10
+          initialDelaySeconds: 30
+          periodSeconds: 15
         volumeMounts:
         - name: storage
           mountPath: /data

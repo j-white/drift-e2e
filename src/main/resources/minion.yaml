@@ -31,14 +31,14 @@ spec:
     spec:
       containers:
       - name: minion
-        image: opennms/minion:latest
+        image: us.gcr.io/opennms-drift/minion:test
+        imagePullPolicy: Always
         ports:
         - containerPort: 8201
           name: karaf-shell
         - containerPort: 8877
           protocol: UDP
           name: netflow-5
-        imagePullPolicy: IfNotPresent
         env:
           - name: OPENNMS_HTTP_URL
             value: "http://opennms:8980/opennms"

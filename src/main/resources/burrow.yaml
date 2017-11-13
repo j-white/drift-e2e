@@ -27,8 +27,8 @@ spec:
     spec:
       containers:
       - name: burrow
-        image: opennms/burrow
-        imagePullPolicy: IfNotPresent
+        image: us.gcr.io/opennms-drift/burrow:test
+        imagePullPolicy: Always
         env:
         - name: ZOOKEEPER_HOSTNAME
           value: zk-cs

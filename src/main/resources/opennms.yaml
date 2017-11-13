@@ -22,8 +22,8 @@ metadata:
     app: opennms
 spec:
   containers:
-  - image: opennms/opennms:latest
-    imagePullPolicy: IfNotPresent
+  - image: us.gcr.io/opennms-drift/opennms:test
+    imagePullPolicy: Always
     name: opennms
     resources:
       requests:

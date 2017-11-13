@@ -74,16 +74,16 @@ List the topics:
 kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --zookeeper zk-cs:2181 --list
 ```
 
-Topic details:
-
-```
-kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --describe --zookeeper zk-cs:2181 --topic OpenNMS.Sink.Telemetry.Netflow-5
-```
-
 Increase the number of partitions:
 
 ```
 kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --alter --zookeeper zk-cs:2181 --topic OpenNMS.Sink.Telemetry.Netflow-5 --partitions 16
+```
+
+Topic details:
+
+```
+kubectl -n $(gizmo-ns) exec -ti kafka-0 -- ./bin/kafka-topics.sh --describe --zookeeper zk-cs:2181 --topic OpenNMS.Sink.Telemetry.Netflow-5
 ```
 
 ### OpenNMS
@@ -102,6 +102,9 @@ kubectl -n $(gizmo-ns) create -f src/main/resources/udpgen.yaml
 ```
 
 ## Burrow
+
+kubectl -n $(gizmo-ns) port-forward burrow-3923507572-mhbc9 18000:8000
+
 
 Lag monitoring:
 ```

@@ -13,7 +13,8 @@ spec:
         app: udpgen
     spec:
       containers:
-      - image: opennms/udpgen
+      - image: us.gcr.io/opennms-drift/udpgen:test
+        imagePullPolicy: Always
         args:
           - "-i"
           - "-x"
@@ -22,6 +23,5 @@ spec:
           - "1000"
           - "-h"
           - "minion"
-        imagePullPolicy: IfNotPresent
         name: udpgen
       restartPolicy: Always
