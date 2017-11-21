@@ -56,17 +56,16 @@ spec:
       labels:
         app: zk
     spec:
-# Run on different nodes
-#      affinity:
-#        podAntiAffinity:
-#          requiredDuringSchedulingIgnoredDuringExecution:
-#            - labelSelector:
-#                matchExpressions:
-#                  - key: "app"
-#                    operator: In
-#                    values:
-#                    - zk
-#              topologyKey: "kubernetes.io/hostname"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - zk
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: kubernetes-zookeeper
         imagePullPolicy: Always
@@ -119,17 +118,17 @@ spec:
             - "zookeeper-ready 2181"
           initialDelaySeconds: 10
           timeoutSeconds: 5
-#        volumeMounts:
-#        - name: datadir
-#          mountPath: /var/lib/zookeeper
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
-#  volumeClaimTemplates:
-#  - metadata:
-#      name: datadir
-#    spec:
-#      accessModes: [ "ReadWriteOnce" ]
-#      resources:
-#        requests:
-#          storage: 10Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi

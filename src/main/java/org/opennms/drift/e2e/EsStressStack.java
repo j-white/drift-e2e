@@ -28,22 +28,13 @@
 
 package org.opennms.drift.e2e;
 
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.opennms.gizmo.k8s.GizmoK8sRule;
+import com.google.common.io.Resources;
+import org.opennms.gizmo.k8s.stacks.YamlBasedK8sStack;
 
-public class DriftStackTest {
+public class EsStressStack extends YamlBasedK8sStack {
 
-    @ClassRule
-    public static GizmoK8sRule gizmo = GizmoK8sRule.builder()
-            .withStack(new MinionStack("test"))
-            .withStack(new UdpgenStack())
-            .withStack(new BurrowStack())
-            .withStack(new EsStressStack())
-            .skipTearDown(true)
-            .build();
-
-    @Test
-    public void canBootstrap() { }
+    public EsStressStack() {
+        super(Resources.getResource("esstress.yaml"));
+    }
 
 }

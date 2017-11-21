@@ -94,7 +94,6 @@ Restart:
 kubectl -n $(gizmo-ns) exec opennms -- /opt/opennms/bin/opennms stop
 ```
 
-
 ## Udpgen
 
 ```
@@ -105,8 +104,13 @@ kubectl -n $(gizmo-ns) create -f src/main/resources/udpgen.yaml
 
 kubectl -n $(gizmo-ns) port-forward burrow-3923507572-mhbc9 18000:8000
 
-
 Lag monitoring:
 ```
 http://127.0.0.1:46635/v2/kafka/local/consumer/OpenNMS/lag
+```
+
+## Flows
+
+```
+curl http://127.0.0.1:9200/_all/flow/_count
 ```

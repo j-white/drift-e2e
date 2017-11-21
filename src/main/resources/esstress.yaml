@@ -1,0 +1,24 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: esstress
+  labels:
+    app: esstress
+spec:
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: esstress
+    spec:
+      containers:
+      - image: us.gcr.io/opennms-drift/esstress:test
+        imagePullPolicy: Always
+        env:
+          - name: JVM_ARGS
+            value: -Xms256m -Xms256m
+          - name: JAVA_OPTS
+            value: -url http://elasticsearch:9200 -threads 16
+        name: esstress
+      restartPolicy: Always

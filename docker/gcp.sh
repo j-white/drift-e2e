@@ -17,3 +17,7 @@ gcloud docker -- push us.gcr.io/opennms-drift/udpgen:test
 
 run docker tag opennms/burrow us.gcr.io/opennms-drift/burrow:test
 gcloud docker -- push us.gcr.io/opennms-drift/burrow:test
+
+run docker tag opennms/esstress us.gcr.io/opennms-drift/esstress:test
+gcloud docker -- push us.gcr.io/opennms-drift/esstress:test
+

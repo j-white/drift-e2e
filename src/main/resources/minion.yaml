@@ -33,6 +33,10 @@ spec:
       - name: minion
         image: us.gcr.io/opennms-drift/minion:test
         imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "0.5"
         ports:
         - containerPort: 8201
           name: karaf-shell

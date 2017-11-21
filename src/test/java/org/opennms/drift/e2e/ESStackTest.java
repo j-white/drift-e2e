@@ -32,13 +32,11 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.opennms.gizmo.k8s.GizmoK8sRule;
 
-public class DriftStackTest {
+public class ESStackTest {
 
     @ClassRule
     public static GizmoK8sRule gizmo = GizmoK8sRule.builder()
-            .withStack(new MinionStack("test"))
-            .withStack(new UdpgenStack())
-            .withStack(new BurrowStack())
+            .withStack(new ElasticsearchStack())
             .withStack(new EsStressStack())
             .skipTearDown(true)
             .build();

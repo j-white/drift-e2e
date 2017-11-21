@@ -31,6 +31,10 @@ spec:
       - name: kafka-broker
         image: "solsson/kafka:0.11.0.0"
         imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "1"
         livenessProbe:
           exec:
             command:
@@ -56,16 +60,16 @@ spec:
         - sh
         - -c
         - "./bin/kafka-server-start.sh config/server.properties --override zookeeper.connect=zk-cs:2181 --override log.dirs=/opt/kafka/data/logs --override broker.id=${HOSTNAME##*-}"
-#        volumeMounts:
-#        - name: datadir
-#          mountPath: "{{ .Values.DataDirectory }}"
-#  volumeClaimTemplates:
-#  - metadata:
-#      name: datadir
-#      annotations:
-#        volume.alpha.kubernetes.io/storage-class: anything
-#    spec:
-#      accessModes: [ "ReadWriteOnce" ]
-#      resources:
-#        requests:
-#          storage: {{ .Values.Storage }}
+        volumeMounts:
+        - name: storage
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+      annotations:
+        volume.beta.kubernetes.io/storage-class: fast
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 40Gi

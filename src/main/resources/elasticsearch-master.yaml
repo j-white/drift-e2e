@@ -87,7 +87,7 @@ spec:
         - name: HTTP_ENABLE
           value: "false"
         - name: "ES_JAVA_OPTS"
-          value: "-Xms512m -Xmx512m"
+          value: "-Xms2g -Xmx2g"
         ports:
         - containerPort: 9300
           name: transport

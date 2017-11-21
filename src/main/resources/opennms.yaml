@@ -27,8 +27,8 @@ spec:
     name: opennms
     resources:
       requests:
-        memory: "1Gi"
-        cpu: "0.5"
+        memory: "9Gi"
+        cpu: "2"
     ports:
     - containerPort: 8980
       name: web
